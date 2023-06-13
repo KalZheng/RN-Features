@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import {
-  Button,
   View,
   Alert,
   TouchableOpacity,
@@ -15,7 +14,9 @@ import {
   MediaTypeOptions,
 } from "expo-image-picker";
 import { Camera } from "expo-camera";
+
 import { Colors } from "../../constants/colors";
+import OutlinedButton from "../UI/OutlinedButton";
 
 function ImagePicker() {
   const [cameraPermissionInformation, requestPermission] =
@@ -106,7 +107,7 @@ function ImagePicker() {
           </TouchableOpacity>
         </View>
       </Camera>
-      <Button title="Take Image" onPress={takePicture} />
+      <OutlinedButton icon="camera" onPress={takePicture} >Take Image</OutlinedButton>
     </View>
   );
 }
