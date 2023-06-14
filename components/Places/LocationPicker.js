@@ -5,6 +5,7 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
+import { useNavigation } from "@react-navigation/native";
 
 import OutlinedButton from "../UI/OutlinedButton";
 import { Colors } from "../../constants/colors";
@@ -13,6 +14,7 @@ import getMapPreview from "../../util/location";
 function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState();
   const [permission, requestPermission] = useForegroundPermissions();
+  const navigation = useNavigation();
 
   async function verifyPermissions() {
     if (permission.status === PermissionStatus.UNDETERMINED) {
@@ -45,7 +47,9 @@ function LocationPicker() {
     });
   }
 
-  function pickOnMapHandler() {}
+  function pickOnMapHandler() {
+    navigation.navigate("Map");
+  }
 
   let locationPreview = <Text>No location picked yet</Text>;
 
@@ -67,7 +71,9 @@ function LocationPicker() {
         <OutlinedButton onPress={getLocationHandler} icon="location">
           locate User
         </OutlinedButton>
-        <OutlinedButton icon="map">Pick on Map</OutlinedButton>
+        <OutlinedButton onPress={pickOnMapHandler} icon="map">
+          Pick on Map
+        </OutlinedButton>
       </View>
     </View>
   );
