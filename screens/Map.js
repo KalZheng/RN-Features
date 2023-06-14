@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import IconButton from "../components/UI/IconButton";
 
-function Map() {
+function Map({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState();
 
   const region = {
@@ -14,19 +15,41 @@ function Map() {
   };
 
   function selectLocationHandler(event) {
-    // const lat = event.nativeEvent.coordinate.latitude;
-    // const lng = event.nativeEvent.coordinate.longitude;
-    // setSelectedLocation({
-    //   lat: lat,
-    //   lng: lng,
-    // });
-    const latitude = event.nativeEvent.coordinate.latitude;
-    const longitude = event.nativeEvent.coordinate.longitude;
+    const lat = event.nativeEvent.coordinate.latitude;
+    const lng = event.nativeEvent.coordinate.longitude;
     setSelectedLocation({
-      latitude,
-      longitude,
+      lat: lat,
+      lng: lng,
     });
   }
+
+  const savePickedLocationHandler = useCallback(() => {
+    if (!selectedLocation) {
+      Alert.alert(
+        "No location picked",
+        "You have to pick a location (by tapping on teh map) first!"
+      );
+      return;
+    }
+    navigation.navigate("AddPlace", {
+      pickedLat: selectedLocation.lat,
+      pickedLng: selectedLocation.lng,
+    });
+  }, [navigation, selectedLocation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({ tintColor }) => (
+        <IconButton
+          icon="save"
+          size={24}
+          color={tintColor}
+          onPress={savePickedLocationHandler}
+        />
+      ),
+    });
+  }, [navigation, savePickedLocationHandler]);
+
   return (
     <MapView
       style={styles.map}
@@ -34,14 +57,13 @@ function Map() {
       onPress={selectLocationHandler}
     >
       {selectedLocation && (
-        // <Marker
-        //   title="Picked Location"
-        //   coordinate={{
-        //     latitude: selectedLocation.lat,
-        //     longitude: selectedLocation.lng,
-        //   }}
-        // />
-        <Marker title="Picked Location" coordinate={selectedLocation} />
+        <Marker
+          title="Picked Location"
+          coordinate={{
+            latitude: selectedLocation.lat,
+            longitude: selectedLocation.lng,
+          }}
+        />
       )}
     </MapView>
   );
