@@ -18,11 +18,12 @@ import { Camera } from "expo-camera";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-function ImagePicker() {
+function ImagePicker({ onTakeImage }) {
   const [cameraPermissionInformation, requestPermission] =
     useCameraPermissions();
-  const [type, setType] = useState(Camera.Constants.Type.back);
   const cameraRef = useRef(null);
+
+  const [type, setType] = useState(Camera.Constants.Type.back);
   const [pickedImage, setPickedImage] = useState();
 
   async function verifyPermissions() {
@@ -66,6 +67,7 @@ function ImagePicker() {
       const data = await cameraRef.current.takePictureAsync(options);
       //   console.log(data.uri);
       setPickedImage(data.uri);
+      onTakeImage(data.uri);
     }
   };
   let imagePreview = <Text>No image taken yet.</Text>;
