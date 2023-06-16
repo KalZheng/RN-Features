@@ -45,7 +45,7 @@ export default function App() {
               title: "Add a New Place",
             }}
           />
-          <Stack.Screen name="Map" component={Mapla} />
+          <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
