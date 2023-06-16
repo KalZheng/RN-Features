@@ -50,7 +50,8 @@ export default PlaceForm;
 const styles = StyleSheet.create({
   form: {
     flex: 1,
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   label: {
     fontWeight: "bold",
